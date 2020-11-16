@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Sprite.qml</file>
+        <file>GameMap.qml</file>
+        <file>MapModels.qml</file>
+        <file>main.qml</file>
+    </qresource>
+</RCC>
