@@ -12,27 +12,27 @@ Rectangle {
         anchors.fill: parent
         id: grid
         width: parent.width; height: width
-        rows: 10
-        columns: 10
-
-
+        rows: 7
+        columns: 7
 
         Repeater
         {
             id: beforeTheItem
-            model:49
+            model:GameBoardModel{
 
+            }
 
-
-
-
-                //////////parent.rows * parent.columns
+            //parent.rows * parent.columns
             Rectangle
             {
                 width: parent.width / parent.columns;
                 height: parent.height / parent.rows;
                 color: "white"
                 border.width: 1
+                Text {
+                    anchors.centerIn: parent
+                    text: display
+                }
             }
         }
     }
