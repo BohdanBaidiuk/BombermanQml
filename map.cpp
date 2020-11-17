@@ -1,19 +1,21 @@
 #include "map.h"
 #include <algorithm>
+#include <QDebug>
 
-Board::Board(const size_t bordSize, QObject *parent):QAbstractListModel(parent), m_boardSize(bordSize)
+Map::Map(const size_t bordSize, QObject *parent):QAbstractListModel(parent), m_boardSize(bordSize)
 {
+    m_boardMap;
     m_boardMap.resize(m_boardSize);
     fillBoard();
 }
 
-int Board::rowCount(const QModelIndex &parent) const
+int Map::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_boardMap.size();
 }
 
-QVariant Board::data(const QModelIndex &index, int role) const
+QVariant Map::data(const QModelIndex &index, int role) const
 {
     if(!index.isValid() || role != Qt::DisplayRole){
         return {};
@@ -23,66 +25,67 @@ QVariant Board::data(const QModelIndex &index, int role) const
     if(!ispositionValid(rowIndex)){
         return {};
     }
+    qDebug()<<rowIndex;
     return QVariant::fromValue(m_boardMap[rowIndex].sumbol_);
 }
 
-void Board::fillBoard()
+void Map::fillBoard()
 {
-//    m_boardMap.push_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
-//    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{' ',TYPE::CORRIDOR});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
+    m_boardMap.emplace_back(Piece{'#',TYPE::BLOCK});
 
 }
 
-bool Board::ispositionValid(const size_t position) const
+bool Map::ispositionValid(const size_t position) const
 {
- return position < m_boardSize;
+    return position < m_boardSize;
 }
