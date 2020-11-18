@@ -7,10 +7,7 @@
 #include <utility>
 #include <QVector>
 
-enum class TYPE {BOT,BLOCK,CRASH_BLOCK,CORRIDOR,BOMB,EXPLOSION};
-
-
-
+enum class TYPE {BOT,brick_wall,CRASH_BLOCK,CORRIDOR,BOMB,EXPLOSION};
 
 class Map : public QAbstractListModel
 {
@@ -18,22 +15,28 @@ class Map : public QAbstractListModel
     //Q_PROPERTY()
 public:
 
+    enum{
+        ImageRole = 1,
+    };
+
+
     static constexpr size_t defaultBordSize{49};
 
     Map( const size_t bordSize = defaultBordSize, QObject* parent = nullptr );
 
     struct Piece{
         Piece(){};
-        Piece(const char& sumbolG,const TYPE &typeG):sumbol_(sumbolG),type_(typeG){};
-        char sumbol_;
-        TYPE type_;
-        bool operator ==(const TYPE otherType){
-            return type_ == otherType;
-        }
+        Piece(char sumbol, QString image):sumbol(sumbol),image(image){};
+        char sumbol;
+        QString image;
+        //        bool operator ==(const TYPE otherType){
+        //            return type_ == otherType;
+        //        }
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex{})const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    virtual QHash<int,QByteArray>roleNames()const override;
 private:
     void fillBoard();
     bool ispositionValid(const size_t position)const;
