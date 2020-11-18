@@ -5,13 +5,15 @@ Rectangle {
     id: main
     width: 600
     height: width
-    color: "green"
+    color: "transparent"
+    property int widthHeight :72
 
     Grid
     {
         anchors.fill: parent
         id: grid
-        width: parent.width; height: width
+        width: widthHeight * 7
+        height: widthHeight * 7
         rows: 7
         columns: 7
 
@@ -21,55 +23,63 @@ Rectangle {
             model:GameBoardModel{
 
             }
-
-            //parent.rows * parent.columns
             Rectangle
             {
-                width: parent.width / parent.columns;
-                height: parent.height / parent.rows;
+                width: widthHeight
+                height: widthHeight
                 color: "white"
                 border.width: 1
-                Text {
-                    anchors.centerIn: parent
-                    text: display
+                Image {
+                    id: name
+                    //anchors.fill: parent
+                    width: parent
+                    height: parent
+                    fillMode: Image.PreserveAspectCrop
+                    source: image
                 }
+//                Text {
+//                    id: txt
+//                    anchors.centerIn: parent
+//                    text: display
+//                }
+
             }
         }
     }
-    focus: true;
+//    focus: true;
 
-    Keys.onLeftPressed: player.moveLeft()
-    Keys.onRightPressed: player.moveRight()
-    Keys.onDownPressed: player.moveDown()
-    Keys.onUpPressed: player.moveUp()
+//    Keys.onLeftPressed: player.moveLeft()
+//    Keys.onRightPressed: player.moveRight()
+//    Keys.onDownPressed: player.moveDown()
+//    Keys.onUpPressed: player.moveUp()
 
-    Rectangle
-    {
-        property int step: parent.width / 10
-        id: player
-        x: parent.width / (10 * 2 * 2); y: parent.width / (10 * 2 * 2)
-        width: parent.width / (10 * 2);height: width
-        color: "black"
+//    Rectangle
+//    {
+//        property int step: parent.width / 10
+//        id: player
+//        x: parent.width / (10 * 2 * 2); y: parent.width / (10 * 2 * 2)
+//        width: parent.width / (10 * 2);height: width
+//        color: "black"
 
-        function moveLeft()
-        {
-            if( x > step )
-                x = x - step;
-        }
-        function moveRight()
-        {
-            if( x < (parent.width - step) )
-                x = x + step;
-        }
-        function moveUp()
-        {
-            if( y > step )
-                y = y - step;
-        }
-        function moveDown()
-        {
-            if( y < (parent.height - step) )
-                y = y + step;
-        }
-    }
+//        function moveLeft()
+//        {
+//            if( x > step )
+//                x = x - step;
+//        }
+//        function moveRight()
+//        {
+//            if( x < (parent.width - step) )
+//                x = x + step;
+//        }
+//        function moveUp()
+//        {
+//            if( y > step )
+//                y = y - step;
+//        }
+//        function moveDown()
+//        {
+//            if( y < (parent.height - step) )
+//                y = y + step;
+//        }
+//    }
 }
