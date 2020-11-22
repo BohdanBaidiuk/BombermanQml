@@ -14,9 +14,10 @@ class Map : public QAbstractListModel
     Q_OBJECT
     //Q_PROPERTY()
 public:
-
+    using Position = std::pair<size_t,size_t>;
     enum{
         ImageRole = 1,
+        ImageUnitRole
     };
 
 
@@ -26,9 +27,10 @@ public:
 
     struct Piece{
         Piece(){};
-        Piece(char sumbol, QString image):sumbol(sumbol),image(image){};
+        Piece(char sumbol, QString imageFirst, QString imageSecond):sumbol(sumbol),imageMap(imageFirst),imageUnit(imageSecond){};
         char sumbol;
-        QString image;
+        QString imageMap;
+        QString imageUnit;
         //        bool operator ==(const TYPE otherType){
         //            return type_ == otherType;
         //        }
@@ -37,12 +39,19 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex{})const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     virtual QHash<int,QByteArray>roleNames()const override;
+
+    Position getRowCol(size_t index)const;
+public slots:
+  bool moveAvatar(int step);
+
+
 private:
     void fillBoard();
     bool ispositionValid(const size_t position)const;
 
     std::vector<Piece> m_boardMap;
     const size_t m_boardSize;
+    size_t curentIndexUtin{};
 };
 
 #endif // MAP_H
