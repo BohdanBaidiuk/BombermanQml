@@ -5,23 +5,22 @@ Rectangle {
     id: main
     width: 600
     height: width
-    color: "transparent"
+    color: "black"
     property int widthHeight :72
-
+    
     Grid
     {
-        anchors.fill: parent
+        anchors.centerIn: parent
         id: grid
         width: widthHeight * 7
         height: widthHeight * 7
         rows: 7
         columns: 7
-
         Repeater
         {
             id: beforeTheItem
             model:GameBoardModel{
-
+                
             }
             Rectangle
             {
@@ -32,54 +31,55 @@ Rectangle {
                 Image {
                     id: name
                     //anchors.fill: parent
-                    width: parent
-                    height: parent
+                    width: widthHeight
+                    height: widthHeight
                     fillMode: Image.PreserveAspectCrop
                     source: image
+                    Image{
+                        //                     property int step: parent.width / 20
+                        width: 50
+                        height: 50
+                        //                       x : parent.width / (20 * 2 * 2); y: parent.width / (20 * 2 * 2)
+                        source:unit
+                        focus: true
+                        Keys.onLeftPressed: beforeTheItem.model.moveAvatar(-7)
+                        Keys.onRightPressed: beforeTheItem.model.moveAvatar(+7)
+                        Keys.onDownPressed: beforeTheItem.model.moveAvatar(+1)
+                        Keys.onUpPressed: beforeTheItem.model.moveAvatar(-1)
+                        
+                        //                        Keys.onLeftPressed: player.moveLeft()
+                        //                        Keys.onRightPressed: player.moveRight()
+                        //                        Keys.onDownPressed: player.moveDown()
+                        //                        Keys.onUpPressed: player.moveUp()
+                        //                        function moveLeft()
+                        //                        {
+                        //                            if(beforeTheItem.model.moveAvatar(-7))
+                        //                                x = x - step;
+                        //                        }
+                        //                        function moveRight()
+                        //                        {
+                        //                            if(beforeTheItem.model.moveAvatar(+7))
+                        //                                x = x + step;
+                        //                        }
+                        //                        function moveUp()
+                        //                        {
+                        //                            if(beforeTheItem.model.moveAvatar(-1))
+                        //                                y = y - step;
+                        //                        }
+                        //                        function moveDown()
+                        //                        {
+                        //                            if(beforeTheItem.model.moveAvatar(+1))
+                        //                                y = y + step;
+                        //                        }
+                    }
                 }
-//                Text {
-//                    id: txt
-//                    anchors.centerIn: parent
-//                    text: display
-//                }
-
+                //                Text {
+                //                    id: txt
+                //                    anchors.centerIn: parent
+                //                    text: display
+                //                }
+                
             }
         }
     }
-//    focus: true;
-
-//    Keys.onLeftPressed: player.moveLeft()
-//    Keys.onRightPressed: player.moveRight()
-//    Keys.onDownPressed: player.moveDown()
-//    Keys.onUpPressed: player.moveUp()
-
-//    Rectangle
-//    {
-//        property int step: parent.width / 10
-//        id: player
-//        x: parent.width / (10 * 2 * 2); y: parent.width / (10 * 2 * 2)
-//        width: parent.width / (10 * 2);height: width
-//        color: "black"
-
-//        function moveLeft()
-//        {
-//            if( x > step )
-//                x = x - step;
-//        }
-//        function moveRight()
-//        {
-//            if( x < (parent.width - step) )
-//                x = x + step;
-//        }
-//        function moveUp()
-//        {
-//            if( y > step )
-//                y = y - step;
-//        }
-//        function moveDown()
-//        {
-//            if( y < (parent.height - step) )
-//                y = y + step;
-//        }
-//    }
 }
