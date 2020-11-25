@@ -7,134 +7,137 @@ QString brick_wall ="image/brick_wall.jpg";
 QString unit = "image/avatar.png";
 QString space = "";
 
-Map::Map(const size_t bordSize, QObject *parent):QAbstractListModel(parent), m_boardSize(bordSize)
+
+TYPE_MAP Map::getTypeMap() const
 {
-    fillBoard();
+    return typeMap;
+}
+
+QString Map::getImageMap() const
+{
+    return imageMap;
+}
+
+Map::Piece Map::getPiece() const
+{
+    return piece;
+}
+
+Map::Map(const TYPE_MAP &type, QString image, Map::Piece pieceInMap):typeMap(type),imageMap(image), piece(pieceInMap)
+{
+
 }
 
 
 
 
-int Map::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return m_boardMap.size();
-}
+//void Map::resetModel()
+//{
+//    beginResetModel();
 
-QVariant Map::data(const QModelIndex &index, int role) const
-{
-    if(!index.isValid()){
-        return {};
-    }
-    const int rowIndex{index.row()};
+//    endResetModel();
+//}
 
-    if(!ispositionValid(rowIndex)){
-        return {};
-    }
-
-    switch (role) {
-    case Qt::DisplayRole:
-        return QVariant(QString(m_boardMap[rowIndex].sumbol));
-    case ImageRole:
-        return QVariant(m_boardMap[rowIndex].imageMap);
-    case ImageUnitRole:
-        return QVariant(m_boardMap[rowIndex].imageUnit);
-    }
+//void Map::setModel()
+//{
 
 
-    return QVariant();
-}
+//}
 
-QHash<int, QByteArray> Map::roleNames() const
-{
-    QHash<int,QByteArray> roles;
-    roles[Qt::DisplayRole] = "display";
-    roles[ImageRole] = "image";
-    roles[ImageUnitRole] = "unit";
-    return roles;
-
-}
-
-Map::Position Map::getRowCol(size_t index) const
-{
-    size_t row = index / 7;
-    size_t col = index % 7;
+//Map::Position Map::getRowCol(size_t index) const
+//{
+//    size_t row = index / 7;
+//    size_t col = index % 7;
 
 
-    return std::make_pair(row,col);
+//    return std::make_pair(row,col);
 
-}
+//}
 
-bool Map::moveAvatar(int step)
-{
-    int stepPosition = curentIndexUtin + step;
-    //qDebug()<<stepPosition;
-    if(stepPosition < 49 && stepPosition > -1){
-        // qDebug()<<curentIndexUtin;
-        m_boardMap[curentIndexUtin].imageUnit = space;
-        m_boardMap[stepPosition].imageUnit = unit;
-        curentIndexUtin = curentIndexUtin + step;
-        return true;
-    }
-    return false;
-}
+//bool Map::moveAvatar(int step)
+//{
+//    int stepPosition = curentIndexUtin + step;
+//    if(stepPosition < 49 && stepPosition > -1){
+//        m_boardMap[curentIndexUtin].imageUnit = space;
+//        m_boardMap[stepPosition].imageUnit = unit;
+//        curentIndexUtin = curentIndexUtin + step;
+//        emit modelChanged();
+//        return true;
+//    }
+//    return false;
+//}
 
-void Map::fillBoard()
-{
+//Piece Map::getPiece() const
+//{
+//    return piece;
+//}
 
-    m_boardMap.emplace_back(Piece{' ',grass,unit});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
-    m_boardMap.emplace_back(Piece{' ',grass,space});
+//QString Map::getImageMap() const
+//{
+//    return imageMap;
+//}
 
-}
+//TYPE_MAP Map::getTypeMap() const
+//{
+//    return typeMap;
+//}
 
-bool Map::ispositionValid(const size_t position) const
-{
-    return position < m_boardSize;
-}
+//void Map::fillBoard()
+//{
+
+//    m_boardMap.emplace_back(Piece{' ',grass,unit});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{'#',brick_wall,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+//    m_boardMap.emplace_back(Piece{' ',grass,space});
+
+//}
+
+//bool Map::ispositionValid(const size_t position) const
+//{
+//    return position < m_boardSize;
+//}

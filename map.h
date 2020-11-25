@@ -7,51 +7,38 @@
 #include <utility>
 #include <QVector>
 
-enum class TYPE {BOT,brick_wall,CRASH_BLOCK,CORRIDOR,BOMB,EXPLOSION};
+enum class TYPE_MAP {BLOCK,CORRIDOR,EMPTY};
+enum class TYPE_PIECE {USER,BOT,BRICK_WALL};
 
-class Map : public QAbstractListModel
+class Map
 {
-    Q_OBJECT
-    //Q_PROPERTY()
 public:
-    using Position = std::pair<size_t,size_t>;
-    enum{
-        ImageRole = 1,
-        ImageUnitRole
-    };
-
-
-    static constexpr size_t defaultBordSize{49};
-
-    Map( const size_t bordSize = defaultBordSize, QObject* parent = nullptr );
-
+    Map() = default;
+    //using Position = std::pair<size_t,size_t>;
+    //static constexpr size_t defaultBordSize{49};
     struct Piece{
-        Piece(){};
-        Piece(char sumbol, QString imageFirst, QString imageSecond):sumbol(sumbol),imageMap(imageFirst),imageUnit(imageSecond){};
-        char sumbol;
-        QString imageMap;
-        QString imageUnit;
-        //        bool operator ==(const TYPE otherType){
-        //            return type_ == otherType;
-        //        }
+        Piece() = default;
+        Piece(QString image, TYPE_PIECE type):imagePiece(image),typePiece(type){};
+        QString imagePiece;
+        TYPE_PIECE typePiece;
     };
+    Map(const TYPE_MAP &type, QString image, Piece pieceInMap);
 
-    int rowCount(const QModelIndex &parent = QModelIndex{})const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    virtual QHash<int,QByteArray>roleNames()const override;
+//    void resetModel();
+//    void setModel();
+   // Position getRowCol(size_t index)const;
+    TYPE_MAP getTypeMap() const;
+    QString getImageMap() const;
+    Piece getPiece() const;
 
-    Position getRowCol(size_t index)const;
-public slots:
-  bool moveAvatar(int step);
-
+//public slots:
+//    bool moveAvatar(int step);
 
 private:
-    void fillBoard();
-    bool ispositionValid(const size_t position)const;
+  TYPE_MAP typeMap{};
+  QString imageMap{};
+  Piece piece{};
 
-    std::vector<Piece> m_boardMap;
-    const size_t m_boardSize;
-    size_t curentIndexUtin{};
 };
 
 #endif // MAP_H

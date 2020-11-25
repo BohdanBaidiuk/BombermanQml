@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "map.h"
+#include "bombermanmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,9 +8,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<Map>("Game",1,0,"GameBoardModel");
-
     QQmlApplicationEngine engine;
+    BombermanModel::registerMe("Bomberman");
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

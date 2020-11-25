@@ -2,7 +2,9 @@
     <qresource prefix="/">
         <file>Sprite.qml</file>
         <file>GameMap.qml</file>
-        <file>MapModels.qml</file>
         <file>main.qml</file>
+        <file>image/brick_wall.jpg</file>
+        <file>image/grass.jpg</file>
+        <file>image/avatar.png</file>
     </qresource>
 </RCC>
