@@ -18,7 +18,7 @@ Rectangle {
         columns: 7
         Repeater
         {
-            id: beforeTheItem
+            id: gridModel
             model:BombermanModel{
 
             }
@@ -33,18 +33,18 @@ Rectangle {
                     anchors.fill: parent
                     width: widthHeight
                     height: widthHeight
-                    //source: image
+                    source: imageMap
                     Image{
                         anchors.fill: parent
                         width: 50
                         height: 50
 
-                        //source:unit
+                        source:piece
                         focus: true
-                        Keys.onLeftPressed: beforeTheItem.model.moveAvatar(-7)
-                        Keys.onRightPressed: beforeTheItem.model.moveAvatar(+7)
-                        Keys.onDownPressed: beforeTheItem.model.moveAvatar(+1)
-                        Keys.onUpPressed: beforeTheItem.model.moveAvatar(-1)
+                        Keys.onLeftPressed: gridModel.model.moveUnit(-7)
+                        Keys.onRightPressed: gridModel.model.moveUnit(+7)
+                        Keys.onDownPressed: gridModel.model.moveUnit(+1)
+                        Keys.onUpPressed: gridModel.model.moveUnit(-1)
                     }
                 }
             }

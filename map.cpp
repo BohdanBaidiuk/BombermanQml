@@ -2,12 +2,6 @@
 #include <algorithm>
 #include <QDebug>
 
-QString grass = "image/grass.jpg";
-QString brick_wall ="image/brick_wall.jpg";
-QString unit = "image/avatar.png";
-QString space = "";
-
-
 TYPE_MAP Map::getTypeMap() const
 {
     return typeMap;
@@ -18,9 +12,31 @@ QString Map::getImageMap() const
     return imageMap;
 }
 
-Map::Piece Map::getPiece() const
+QString Map::getPieceImage() const
+{
+    return piece.imagePiece;
+}
+
+void Map::setCurrentIdnex(int index)
+{
+    piece.currentIndex = index;
+}
+
+int Map::getCurrentIndex() const
+{
+    return piece.currentIndex;
+}
+
+Map::Piece Map::getPiece()
 {
     return piece;
+}
+
+void Map::swapPiece(Map &mapPiece)
+{
+    auto tmpPiece = mapPiece.getPiece();
+    std::swap(piece,tmpPiece);
+
 }
 
 Map::Map(const TYPE_MAP &type, QString image, Map::Piece pieceInMap):typeMap(type),imageMap(image), piece(pieceInMap)
@@ -31,18 +47,7 @@ Map::Map(const TYPE_MAP &type, QString image, Map::Piece pieceInMap):typeMap(typ
 
 
 
-//void Map::resetModel()
-//{
-//    beginResetModel();
 
-//    endResetModel();
-//}
-
-//void Map::setModel()
-//{
-
-
-//}
 
 //Map::Position Map::getRowCol(size_t index) const
 //{
