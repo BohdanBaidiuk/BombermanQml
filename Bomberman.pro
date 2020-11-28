@@ -9,7 +9,8 @@ CONFIG += c++11
 SOURCES += \
         bombermanmodel.cpp \
         main.cpp \
-        map.cpp
+        map.cpp \
+        piece.cpp
 
 RESOURCES += qml.qrc
 
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     bombermanmodel.h \
-    map.h
+    map.h \
+    piece.h

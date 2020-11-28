@@ -1,11 +1,15 @@
 #include "bombermanmodel.h"
 #include <QQmlEngine>
+#include <algorithm>
 
 namespace  {
 QString grass = "image/grass.jpg";
 QString brick_wall ="image/brick_wall.jpg";
 QString unit = "image/avatar.png";
 QString space = "";
+QString bomb = "image/bomb.png";
+int currIndex{};
+int currIndexBomb{};
 }
 
 
@@ -40,89 +44,102 @@ QVariant BombermanModel::data(const QModelIndex &index, int role) const
     if(!index.isValid()|| index.row() > rowCount(index)){
         return {};
     }
-    const Map &map = m_map.at(index.row());
+    const auto &map = m_map.at(index.row());
 
     switch (role) {
     case BombermanRole::TypeMap:
-        return QVariant::fromValue(map.getTypeMap());
+        return QVariant::fromValue(map.first.getTypeMap());
     case BombermanRole::ImageMap:
-        return QVariant::fromValue(map.getImageMap());
+        return QVariant::fromValue(map.first.getImageMap());
     case BombermanRole::PieceInMap:
-        return QVariant::fromValue(map.getPieceImage());
+        return QVariant::fromValue(map.second.imagePiece);
     }
 
     return QVariant();
 }
 
+void BombermanModel::resetModel()
+{
+    beginResetModel();
+    endResetModel();
+}
+
 void BombermanModel::moveUnit(int step)
 {
-    Map &unit = m_map.at(currentIndexUnit);
-    qDebug()<<unit.getPieceImage();
-    int stepPosition = unit.getCurrentIndex() + step;
 
-    if(stepPosition < 49 && stepPosition > -1){
-        Map &stepUnit = m_map.at(stepPosition);
-        stepUnit.swapPiece(unit);
-        unit.setCurrentIdnex(stepPosition);
-        currentIndexUnit = stepPosition;
-
-        beginResetModel();
-        endResetModel();
+    auto &unit = m_map.at(currIndex);
+    int stepPosition = currIndex + step;
+    if(stepPosition > -1 && stepPosition < 49){
+        auto &stepUnit = m_map.at(stepPosition);
+        if(stepUnit.second.typePiece == TYPE_PIECE::EMPTY){
+            std::swap(unit.second,stepUnit.second);
+            currIndex = stepPosition;
+        }
+       resetModel();
     }
+
+}
+
+void BombermanModel::setBomb()
+{
+
+
+
+
 }
 
 
 void BombermanModel::fillMap()
 {
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{unit,TYPE_PIECE::USER});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
-    m_map.emplace_back(TYPE_MAP::CORRIDOR,grass,Map::Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{unit,TYPE_PIECE::USER});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{brick_wall,TYPE_PIECE::BRICK_WALL});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
+    m_map.emplace_back(Map{TYPE_MAP::CORRIDOR,grass},Piece{space,TYPE_PIECE::EMPTY});
 
 }
 

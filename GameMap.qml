@@ -41,10 +41,11 @@ Rectangle {
 
                         source:piece
                         focus: true
-                        Keys.onLeftPressed: gridModel.model.moveUnit(-7)
-                        Keys.onRightPressed: gridModel.model.moveUnit(+7)
-                        Keys.onDownPressed: gridModel.model.moveUnit(+1)
-                        Keys.onUpPressed: gridModel.model.moveUnit(-1)
+                        Keys.onLeftPressed: gridModel.model.moveUnit(-1)
+                        Keys.onRightPressed: gridModel.model.moveUnit(+1)
+                        Keys.onDownPressed: gridModel.model.moveUnit(+7)
+                        Keys.onUpPressed: gridModel.model.moveUnit(-7)
+                       // Keys.onEnterPressed: gridModel.model.
                     }
                 }
             }

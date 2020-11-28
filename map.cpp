@@ -12,34 +12,12 @@ QString Map::getImageMap() const
     return imageMap;
 }
 
-QString Map::getPieceImage() const
-{
-    return piece.imagePiece;
-}
 
-void Map::setCurrentIdnex(int index)
-{
-    piece.currentIndex = index;
-}
 
-int Map::getCurrentIndex() const
-{
-    return piece.currentIndex;
-}
 
-Map::Piece Map::getPiece()
-{
-    return piece;
-}
 
-void Map::swapPiece(Map &mapPiece)
-{
-    auto tmpPiece = mapPiece.getPiece();
-    std::swap(piece,tmpPiece);
 
-}
-
-Map::Map(const TYPE_MAP &type, QString image, Map::Piece pieceInMap):typeMap(type),imageMap(image), piece(pieceInMap)
+Map::Map(const TYPE_MAP &type, QString image):typeMap(type),imageMap(image)
 {
 
 }
