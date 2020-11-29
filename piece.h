@@ -4,7 +4,7 @@
 #include <QString>
 #include <QObject>
 
-enum class TYPE_PIECE {USER,BOT,BRICK_WALL,EMPTY};
+enum class TYPE_PIECE {USER,BOT,BRICK_WALL,BOMB,EMPTY};
 
 Q_DECLARE_METATYPE(TYPE_PIECE);
 

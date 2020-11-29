@@ -3,8 +3,8 @@ import Bomberman 1.0
 
 Rectangle {
     id: main
-    width: 600
-    height: 600
+    width: grid.width
+    height: grid.height
     color: "black"
     property int widthHeight :72
 
@@ -12,10 +12,10 @@ Rectangle {
     {
         anchors.centerIn: parent
         id: grid
-        width: widthHeight * 7
-        height: widthHeight * 7
-        rows: 7
-        columns: 7
+        width: widthHeight * 9
+        height: widthHeight * 9
+        rows: 9
+        columns: 9
         Repeater
         {
             id: gridModel
@@ -34,18 +34,28 @@ Rectangle {
                     width: widthHeight
                     height: widthHeight
                     source: imageMap
+
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            console.log(index)
+
+                        }
+                    }
                     Image{
                         anchors.fill: parent
                         width: 50
                         height: 50
-
                         source:piece
                         focus: true
                         Keys.onLeftPressed: gridModel.model.moveUnit(-1)
-                        Keys.onRightPressed: gridModel.model.moveUnit(+1)
-                        Keys.onDownPressed: gridModel.model.moveUnit(+7)
-                        Keys.onUpPressed: gridModel.model.moveUnit(-7)
-                       // Keys.onEnterPressed: gridModel.model.
+                        Keys.onRightPressed:{
+
+                            gridModel.model.moveUnit(+1)
+                        }
+                        Keys.onDownPressed: gridModel.model.moveUnit(+9)
+                        Keys.onUpPressed: gridModel.model.moveUnit(-9)
+                        Keys.onSpacePressed: gridModel.model.setBomb()
                     }
                 }
             }

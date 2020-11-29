@@ -7,7 +7,7 @@
 #include <utility>
 #include <QVector>
 
-enum class TYPE_MAP {BLOCK,CORRIDOR,EMPTY};
+enum class TYPE_MAP {WALL,CORRIDOR,EMPTY};
 
 
 
