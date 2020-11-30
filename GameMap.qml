@@ -34,28 +34,18 @@ Rectangle {
                     width: widthHeight
                     height: widthHeight
                     source: imageMap
-
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: {
-                            console.log(index)
-
-                        }
-                    }
-                    Image{
+                    AnimatedImage{
                         anchors.fill: parent
                         width: 50
                         height: 50
                         source:piece
                         focus: true
                         Keys.onLeftPressed: gridModel.model.moveUnit(-1)
-                        Keys.onRightPressed:{
-
-                            gridModel.model.moveUnit(+1)
-                        }
+                        Keys.onRightPressed: gridModel.model.moveUnit(+1)
                         Keys.onDownPressed: gridModel.model.moveUnit(+9)
                         Keys.onUpPressed: gridModel.model.moveUnit(-9)
                         Keys.onSpacePressed: gridModel.model.setBomb()
+
                     }
                 }
             }
