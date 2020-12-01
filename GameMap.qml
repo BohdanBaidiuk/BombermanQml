@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import Bomberman 1.0
 
 Rectangle {
@@ -40,6 +40,7 @@ Rectangle {
                         height: 50
                         source:piece
                         focus: true
+                        speed: 0.8
                         Keys.onLeftPressed: gridModel.model.moveUnit(-1)
                         Keys.onRightPressed: gridModel.model.moveUnit(+1)
                         Keys.onDownPressed: gridModel.model.moveUnit(+9)

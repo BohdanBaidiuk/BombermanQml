@@ -5,8 +5,9 @@
         <file>main.qml</file>
         <file>image/brick_wall.jpg</file>
         <file>image/grass.jpg</file>
-        <file>image/bomb.png</file>
         <file>image/wall.jpg</file>
         <file>image/avatar/avatar.gif</file>
+        <file>image/blast.png</file>
+        <file>image/bomb.gif</file>
     </qresource>
 </RCC>

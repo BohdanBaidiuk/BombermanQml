@@ -4,7 +4,7 @@
 #include <QString>
 #include <QObject>
 
-enum class TYPE_PIECE {USER,BOT,BRICK_WALL,BOMB,EMPTY};
+enum class TYPE_PIECE {USER,BOT,BRICK_WALL,BOMB,BLAST,EMPTY};
 
 Q_DECLARE_METATYPE(TYPE_PIECE);
 
@@ -13,7 +13,6 @@ struct Piece{
     Piece(QString image, TYPE_PIECE type):imagePiece(image),typePiece(type){};
     QString imagePiece;
     TYPE_PIECE typePiece;
-
 };
 Q_DECLARE_METATYPE(Piece);
 

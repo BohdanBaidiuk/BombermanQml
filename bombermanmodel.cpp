@@ -8,8 +8,10 @@ QString grass = "image/grass.jpg";
 QString brick_wall ="image/brick_wall.jpg";
 QString unitGif = "image/avatar/avatar.gif";
 QString space = "";
-QString bomb = "image/bomb.png";
+QString bomb = "image/bomb.gif";
 QString wall = "image/wall.jpg";
+QString blastBomb = "image/blast.png";
+
 int currIndex = 10;
 int currIndexBomb{};
 bool stateBomb = false;
@@ -21,9 +23,11 @@ BombermanModel::BombermanModel()
 
     connect(timer,SIGNAL(timeout()),this,SLOT(onAutoRefreshModel()));
     connect(timerBomb,SIGNAL(timeout()),this,SLOT(onBombBlast()));
+    connect(timerFierBlast,SIGNAL(timeout()),this,SLOT(onStopFierBlast()));
     timer->start(600);
-    timerBomb->start(1000);
-    timerBomb->stop();
+    timerBomb->setInterval(1000);
+    timerFierBlast->setInterval(500);
+
     fillMap();
 }
 
@@ -72,6 +76,28 @@ void BombermanModel::resetModel()
     endResetModel();
 }
 
+void BombermanModel::setBlast(int stepBlast)
+{
+    auto &blast= m_map.at(stepBlast);
+    if(blast.second.typePiece == TYPE_PIECE::BRICK_WALL || blast.second.typePiece == TYPE_PIECE::BOT
+            || blast.second.typePiece == TYPE_PIECE::EMPTY ||blast.second.typePiece == TYPE_PIECE::BOMB){
+        if(blast.first.getTypeMap() == TYPE_MAP::CORRIDOR){
+            blast.second.imagePiece = blastBomb;
+            blast.second.typePiece = TYPE_PIECE::BLAST;
+            timerFierBlast->start();
+        }
+    }
+}
+
+void BombermanModel::setStopFierBlast(int stepBlast)
+{
+    auto &stopFier= m_map.at(stepBlast);
+    if(stopFier.second.typePiece == TYPE_PIECE::BLAST){
+        stopFier.second.imagePiece = grass;
+        stopFier.second.typePiece = TYPE_PIECE::EMPTY;
+    }
+}
+
 void BombermanModel::onAutoRefreshModel()
 {
     resetModel();
@@ -79,12 +105,25 @@ void BombermanModel::onAutoRefreshModel()
 
 void BombermanModel::onBombBlast()
 {
-   auto &bomb= m_map.at(currIndexBomb);
-   bomb.second.imagePiece = space;
-   bomb.second.typePiece = TYPE_PIECE::EMPTY;
-   currIndexBomb = -1;
-   timerBomb->stop();
-   stateBomb = false;
+    setBlast(currIndexBomb);
+    setBlast(currIndexBomb - 1);
+    setBlast(currIndexBomb + 1);
+    setBlast(currIndexBomb - 9);
+    setBlast(currIndexBomb + 9);
+    timerBomb->stop();
+}
+
+void BombermanModel::onStopFierBlast()
+{
+    setStopFierBlast(currIndexBomb);
+    setStopFierBlast(currIndexBomb + 1);
+    setStopFierBlast(currIndexBomb - 1);
+    setStopFierBlast(currIndexBomb + 9);
+    setStopFierBlast(currIndexBomb - 9);
+    timerFierBlast->stop();
+    currIndexBomb = -1;
+    stateBomb = false;
+
 }
 
 void BombermanModel::moveUnit(int step)

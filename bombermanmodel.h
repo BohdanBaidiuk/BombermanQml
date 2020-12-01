@@ -19,12 +19,15 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex{})const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     void resetModel();
+    void setBlast(int stepBlast);
+    void setStopFierBlast(int stepBlast);
 
 public slots:
     void moveUnit(int step);
     void setBomb();
     void onAutoRefreshModel();
     void onBombBlast();
+    void onStopFierBlast();
 
 signals:
    void refreshModel();
@@ -32,6 +35,7 @@ signals:
 private:
     std::vector<std::pair<Map,Piece>> m_map;
     QTimer *timerBomb = new QTimer(this);
+    QTimer *timerFierBlast = new QTimer(this);
     enum BombermanRole{
         TypeMap = Qt::UserRole + 1,
         ImageMap,
